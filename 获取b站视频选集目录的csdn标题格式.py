@@ -1,7 +1,7 @@
 # -*- codeing = utf-8 -*-
 # @Time :2021/10/20 15:19
 # @Author:JeffreyLeal
-# @File : 获取b站视频选集目录的csdn标题格式.py
+# @File : 获取某站视频选集目录的csdn标题格式.py
 # @Software: PyCharm
 
 # coding: utf-8
@@ -9,7 +9,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-
 
 class Item:
     page_num = ""
@@ -50,8 +49,20 @@ def get_bilili_page_items(url):
     wait = WebDriverWait(browser, 10)
     wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@class="list-box"]/li/a')))
 
-    print("正在获取网页数据...")
-    list = browser.find_elements_by_xpath('//*[@class="list-box"]/li')
+    print("正在获取网页数据...\n")
+
+    # 获取视频总集标题.
+    title = browser.find_element(by=By.XPATH, value='//*[@class="tit tr-fix"]').text # 获取该页面所有标题跟视频链接
+    print('@[TOC]('+title+' 笔记)')
+    print('# 教程与代码地址')
+    print('笔记中，图片和代码基本源自up主的视频和代码\n')
+    print('视频链接: [' + title + ']('+ url + ')')
+    print('视频代码: []()')
+    print('如果想要爬虫视频网站一样的csdn目录，可以去这里下载代码：[https://github.com/JeffreyLeal/MyUtils/tree/%E7%88%AC%E8%99%AB%E5%B7%A5%E5%85%B71](https://github.com/JeffreyLeal/MyUtils/tree/%E7%88%AC%E8%99%AB%E5%B7%A5%E5%85%B71)')
+
+
+    # 获取视频分集标题列表
+    list = browser.find_elements(by=By.XPATH, value='//*[@class="list-box"]/li')
     # print(list)
     itemList = []
 
@@ -60,7 +71,7 @@ def get_bilili_page_items(url):
     # 2.循环遍历出每一条搜索结果的标题
     for t in list:
         # print("t text:",t.text)
-        element = t.find_element_by_tag_name('a')
+        element = t.find_element(by=By.TAG_NAME, value='a')
         # print("a text:",element.text)
         arr = element.text.split('\n')
 
@@ -87,5 +98,5 @@ def get_bilili_page_items(url):
     return itemList
 
 #此处输入b站视频地址，需要安装chrome浏览器
-url = "https://www.bilibili.com/video/BV1hE411t7RN"
+url = "https://www.bilibili.com/video/BV1LA411n73X"
 get_bilili_page_items(url)
