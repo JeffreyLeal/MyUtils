@@ -28,19 +28,13 @@ class Item:
 
         return sum
 
-    # def show_item_csdn_content_format(self):
-
-
-
 def get_bilili_page_items(url):
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')  # 设置无界面
     options.add_experimental_option('excludeSwitches', ['enable-automation'])
-    # options.add_experimental_option("prefs", {"profile.managed_default_content_settings.images": 2,
-    #                                           "profile.managed_default_content_settings.flash": 0})
 
     browser = webdriver.Chrome(options=options)
-    # browser = webdriver.PhantomJS()
+
     print("正在打开网页...")
     browser.get(url)
 
@@ -56,8 +50,9 @@ def get_bilili_page_items(url):
     print('@[TOC]('+title+' 笔记)')
     print('# 教程与代码地址')
     print('笔记中，图片和代码基本源自up主的视频和代码\n')
-    print('视频链接: [' + title + ']('+ url + ')')
-    print('视频代码: []()')
+    print('视频地址: [' + title + ']('+ url + ')')
+    print('代码地址: []()')
+    print('讲义地址：[]()')
     print('如果想要爬虫视频网站一样的csdn目录，可以去这里下载代码：[https://github.com/JeffreyLeal/MyUtils/tree/%E7%88%AC%E8%99%AB%E5%B7%A5%E5%85%B71](https://github.com/JeffreyLeal/MyUtils/tree/%E7%88%AC%E8%99%AB%E5%B7%A5%E5%85%B71)')
 
 
@@ -76,18 +71,16 @@ def get_bilili_page_items(url):
         arr = element.text.split('\n')
 
         # 以csdn目录的格式输出，把 'p1','p1的标题'，'视频长度' -> '#','p1','p1的标题'
-        arr[0], arr[1], arr[2] = '#', arr[0], arr[1]
-
-        print(" ".join(arr))
+        # arr[0], arr[1], arr[2] = '#', arr[0], arr[1]
+        print("# " + arr[0] + ' ' + arr[1])
 
         item = Item(arr[0], arr[1], arr[2])
+
         # 计算时长
         # second_sum += item.get_second()
-
-        itemList.append(item)
+        # itemList.append(item)
 
     # print("总数量:", len(itemList))
-    # browser.page_source
 
     # 显示时长
     # print("总时长/分钟:", round(second_sum / 60, 2))
