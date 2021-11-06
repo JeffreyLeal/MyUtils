@@ -45,13 +45,20 @@ def get_bilili_page_items(url):
 
     print("正在获取网页数据...\n")
 
-    # 获取视频总集标题.
-    title = browser.find_element(by=By.XPATH, value='//*[@class="tit tr-fix"]').text # 获取该页面所有标题跟视频链接
+    # 获取视频总集标题，这句有时候会找不到标题标签，要选择标题浏览页面源码，看标题标签的名字
+    if browser.find_element(by=By.XPATH, value='//*[@class="tit"]'):
+        title = browser.find_element(by=By.XPATH, value='//*[@class="tit"]').text
+    elif browser.find_element(by=By.XPATH, value='//*[@class="tit tr-fix"]'):
+        title = browser.find_element(by=By.XPATH, value='//*[@class="tit tr-fix"]').text
+    else:
+        title = ''
+
+    # title = ''
     print('@[TOC]('+title+' 笔记)')
     print('# 教程与代码地址')
     print('笔记中，图片和代码基本源自up主的视频和代码\n')
-    print('视频地址: [' + title + ']('+ url + ')')
-    print('代码地址: []()')
+    print('视频地址：[' + title + ']('+ url + ')')
+    print('代码地址：[]()')
     print('讲义地址：[]()')
     print('如果想要爬虫视频网站一样的csdn目录，可以去这里下载代码：[https://github.com/JeffreyLeal/MyUtils/tree/%E7%88%AC%E8%99%AB%E5%B7%A5%E5%85%B71](https://github.com/JeffreyLeal/MyUtils/tree/%E7%88%AC%E8%99%AB%E5%B7%A5%E5%85%B71)')
 
@@ -74,7 +81,7 @@ def get_bilili_page_items(url):
         # arr[0], arr[1], arr[2] = '#', arr[0], arr[1]
         print("# " + arr[0] + ' ' + arr[1])
 
-        item = Item(arr[0], arr[1], arr[2])
+        # item = Item(arr[0], arr[1], arr[2])
 
         # 计算时长
         # second_sum += item.get_second()
@@ -91,5 +98,5 @@ def get_bilili_page_items(url):
     return itemList
 
 #此处输入b站视频地址，需要安装chrome浏览器
-url = "https://www.bilibili.com/video/BV1LA411n73X"
+url = "https://www.bilibili.com/video/BV1Hq4y1x7C5"
 get_bilili_page_items(url)
